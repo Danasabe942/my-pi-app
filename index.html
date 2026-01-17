@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Pi App</title>
+
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+</head>
+<body>
+
+  <h2>Welcome to My Pi Marketplace</h2>
+
+  <button onclick="payWithPi()">Pay with Pi</button>
+
+  <script>
+    Pi.init({ version: "2.0", sandbox: true });
+
+    function payWithPi() {
+      Pi.createPayment({
+        amount: 1,
+        memo: "Test payment",
+        metadata: { orderId: "12345" }
+      }, {
+        onReadyForServerApproval: function (paymentId) {
+          console.log("Payment ID:", paymentId);
+        },
+        onComplete: function (payment) {
+          alert("Payment successful!");
+        },
+        onCancel: function (payment) {
+          alert("Payment cancelled");
+        },
+        onError: function (error) {
+          alert("Error occurred");
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
+
