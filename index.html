@@ -23,7 +23,8 @@
   <script>
     // Initialize Pi SDK
     Pi.init({ version: "2.0", sandbox: true });
-
+alert("Pi SDK loaded");
+    
     // Login function (REQUIRED)
     function piLogin() {
       Pi.authenticate(["payments"], function(auth) {
