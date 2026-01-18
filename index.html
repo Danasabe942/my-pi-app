@@ -1,36 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>My Pi App</title>
-
-  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 </head>
+
 <body>
 
   <h2>Welcome to My Pi Marketplace</h2>
 
+  <!-- Login button -->
+  <button onclick="piLogin()">Login with Pi</button>
+
+  <br><br>
+
+  <!-- Pay button -->
   <button onclick="payWithPi()">Pay with Pi</button>
 
+  <!-- ✅ Pi SDK MUST be loaded HERE (just before </body>) -->
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+
   <script>
+    // Initialize Pi SDK
     Pi.init({ version: "2.0", sandbox: true });
 
+    // Login function (REQUIRED)
+    function piLogin() {
+      Pi.authenticate(["payments"], function(auth) {
+        alert("Login successful");
+        console.log(auth);
+      }, function(error) {
+        alert("Login failed");
+        console.error(error);
+      });
+    }
+
+    // Payment function
     function payWithPi() {
       Pi.createPayment({
         amount: 1,
         memo: "Test payment",
-        metadata: { orderId: "12345" }
+        metadata: { orderId: "001" }
       }, {
-        onReadyForServerApproval: function (paymentId) {
-          console.log("Payment ID:", paymentId);
+        onReadyForServerApproval: function(paymentId) {
+          console.log("Ready for approval:", paymentId);
         },
-        onComplete: function (payment) {
+        onComplete: function(payment) {
           alert("Payment successful!");
+          console.log(payment);
         },
-        onCancel: function (payment) {
+        onCancel: function(payment) {
           alert("Payment cancelled");
         },
-        onError: function (error) {
-          alert("Error occurred");
+        onError: function(error) {
+          alert("Payment error");
+          console.error(error);
         }
       });
     }
