@@ -42,24 +42,13 @@
         memo: "Test payment",
         metadata: { orderId: "001" }
       }, {
-        onReadyForServerApproval: function(paymentId) {
-          console.log("Ready for approval:", paymentId);
-        },
-        onComplete: function(payment) {
-          alert("Payment successful!");
-          console.log(payment);
-        },
-        onCancel: function(payment) {
-          alert("Payment cancelled");
-        },
-        onError: function(error) {
-          alert("Payment error");
-          console.error(error);
-        }
-      });
-    }
-  </script>
-
-</body>
-</html>
-
+      onReadyForServerApproval: async function(paymentId) {
+  await fetch("/api/approve-payment", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ paymentId })
+  });
+      }
+        
